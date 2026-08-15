@@ -45,7 +45,7 @@ Requirements: Docker Engine/Desktop with Compose v2.
 
 ```bash
 git clone https://github.com/GGtascher/sentinellite.git
-cd SentinelLite
+cd sentinellite
 cp .env.example .env
 # Edit .env and replace POSTGRES_PASSWORD.
 docker compose up --build
