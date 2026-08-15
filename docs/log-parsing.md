@@ -2,6 +2,17 @@
 
 “Universal” means safe acceptance and best-effort extraction—not perfect understanding. SentinelLite uses specialized parsers plus generic extraction and raw-event fallback for unknown formats. A submitted record is rejected only at an input boundary (empty, too large, disallowed/binary upload, malformed container file), not merely because its format is unfamiliar.
 
+## Browser workbench
+
+The dashboard's **Add logs** page at <http://localhost:3000/ingest> is the recommended interactive path:
+
+1. Paste one log, one non-empty event per line, a formatted JSON object, or a JSON array.
+2. Select a built-in format example when learning the accepted shapes.
+3. Choose **Submit and analyze** and review parsed, partial, raw-fallback, and rejected counts.
+4. Use the persistent submission journal to open any stored event and compare normalized fields with `raw_event`.
+
+The same page uploads UTF-8 `.txt`, `.log`, `.json`, `.jsonl`, `.ndjson`, `.csv`, and `.tsv` files up to 10 MiB. JSON files may contain one object or an array. CSV/TSV files require a header row. Paste batches are limited to 5,000 events and each event to 256 KiB. Workbench submissions use `source_type=workbench`, which makes their journal filter durable across browser refreshes.
+
 ## Layer order
 
 1. Detect a structured object (currently JSON).

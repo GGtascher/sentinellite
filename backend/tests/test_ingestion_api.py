@@ -23,6 +23,18 @@ def test_multiline_text_counts_raw_fallback_as_safe_storage(client):
     assert body["partially_parsed"] == 1
 
 
+def test_pretty_json_text_is_one_structured_event(client):
+    response = client.post(
+        "/api/v1/ingest/text",
+        json={"event": '{\n  "host": "lab-01",\n  "event_type": "application_health"\n}', "source_type": "workbench"},
+    )
+    assert response.status_code == 200
+    assert response.json()["total_submitted"] == 1
+    event = client.get(f"/api/v1/events/{response.json()['event_ids'][0]}").json()
+    assert event["hostname"] == "lab-01"
+    assert event["source_type"] == "workbench"
+
+
 def test_empty_and_oversized_payloads_are_rejected(client):
     assert client.post("/api/v1/ingest/event", json={"event": ""}).status_code == 422
     response = client.post("/api/v1/ingest/event", json={"event": "x" * 300_000})
@@ -45,11 +57,14 @@ def test_csv_upload_becomes_structured_events(client):
 
 
 def test_api_pagination_and_filtering(client):
-    client.post("/api/v1/ingest/batch", json={"events": ["src=10.0.0.1 action=blocked", "src=10.0.0.2 action=blocked"]})
+    client.post("/api/v1/ingest/batch", json={"events": ["src=10.0.0.1 action=blocked", "src=10.0.0.2 action=blocked"], "source_type": "workbench"})
     response = client.get("/api/v1/events?page=1&page_size=1&source_ip=10.0.0.1")
     assert response.status_code == 200
     assert response.json()["total"] == 1
     assert len(response.json()["items"]) == 1
+    assert response.json()["items"][0]["source_type"] == "workbench"
+    assert response.json()["items"][0]["parse_status"] == "parsed"
+    assert client.get("/api/v1/events?source_type=other").json()["total"] == 0
 
 
 def test_health_and_missing_resources(client):
