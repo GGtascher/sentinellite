@@ -4,6 +4,8 @@
 
 SentinelLite collects untrusted logs, selects a best-fit parser, normalizes investigation fields, preserves original evidence, evaluates YAML detections and correlations, and exposes the results through a documented API and responsive analyst dashboard.
 
+> 🇺🇦 [Українська інструкція: як завантажити, запустити та перевірити SentinelLite](docs/quickstart-uk.md)
+
 > Project status: **0.1.0 development release.** Useful end-to-end and tested, but not yet intended to replace a staffed enterprise SIEM.
 
 ## Features
@@ -42,7 +44,7 @@ Upload `.txt`, `.log`, `.json`, `.jsonl`, `.ndjson`, `.csv`, or `.tsv`, or post 
 Requirements: Docker Engine/Desktop with Compose v2.
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/GGtascher/sentinellite.git
 cd SentinelLite
 cp .env.example .env
 # Edit .env and replace POSTGRES_PASSWORD.
