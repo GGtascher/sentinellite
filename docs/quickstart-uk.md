@@ -42,6 +42,15 @@ Copy-Item .env.example .env
 notepad .env
 ```
 
+Звичайний Windows Command Prompt (`cmd.exe`):
+
+```bat
+copy .env.example .env
+notepad .env
+```
+
+`Copy-Item` працює лише у PowerShell. Якщо запрошення виглядає як `C:\Users\name>`, ви, найімовірніше, використовуєте `cmd.exe`, тому використовуйте команду `copy`.
+
 Linux або macOS:
 
 ```bash

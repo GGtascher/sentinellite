@@ -4,7 +4,7 @@
 
 SentinelLite collects untrusted logs, selects a best-fit parser, normalizes investigation fields, preserves original evidence, evaluates YAML detections and correlations, and exposes the results through a documented API and responsive analyst dashboard.
 
-> 🇺🇦 [Українська інструкція: як завантажити, запустити та перевірити SentinelLite](docs/quickstart-uk.md)
+Setup guides: [Українська](docs/quickstart-uk.md) · [Русский](docs/quickstart-ru.md) · [Deutsch](docs/quickstart-de.md) · [Polski](docs/quickstart-pl.md)
 
 > Project status: **0.1.0 development release.** Useful end-to-end and tested, but not yet intended to replace a staffed enterprise SIEM.
 
