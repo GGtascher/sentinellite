@@ -1,0 +1,17 @@
+- id: PERS-001
+  title: Suspicious administrator account creation
+  description: A newly created account has a name commonly associated with privileged administration.
+  severity: high
+  match:
+    event_type: account_created
+    username: {regex: "(?i)(admin|root|svc[_-]?admin)"}
+  mitre: {tactic: Persistence, technique: T1136.001}
+
+- id: PERS-002
+  title: Scheduled task persistence
+  description: A scheduled task was created and should be reviewed for authorized persistence.
+  severity: medium
+  match:
+    event_type: scheduled_task_created
+  mitre: {tactic: Persistence, technique: T1053.005}
+

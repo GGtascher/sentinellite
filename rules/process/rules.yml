@@ -1,0 +1,38 @@
+- id: PROC-001
+  title: Suspicious PowerShell execution
+  description: PowerShell was launched with options commonly associated with hidden or policy-bypassing execution.
+  severity: high
+  match:
+    all:
+      - event_type: process_creation
+      - command_line: {regex: "powershell.*(-nop|-w(indowstyle)? hidden|-executionpolicy bypass)"}
+  mitre: {tactic: Execution, technique: T1059.001}
+
+- id: PROC-002
+  title: Encoded PowerShell command
+  description: PowerShell was launched with an encoded command argument.
+  severity: high
+  match:
+    event_type: process_creation
+    command_line: {regex: "powershell.*(-enc|-encodedcommand)\\s+"}
+  mitre: {tactic: Defense Evasion, technique: T1027}
+
+- id: PROC-003
+  title: Office application spawned a shell
+  description: An Office application launched a command shell or PowerShell.
+  severity: critical
+  match:
+    event_type: process_creation
+    parent_process_name: {regex: "^(winword|excel|powerpnt|outlook)\\.exe$"}
+    process_name: {regex: "^(cmd|powershell|pwsh|wscript|cscript)\\.exe$"}
+  mitre: {tactic: Execution, technique: T1204.002}
+
+- id: PROC-004
+  title: Executable launched from a temporary directory
+  description: A process command line references an executable in a user or system temporary directory.
+  severity: medium
+  match:
+    event_type: process_creation
+    command_line: {regex: "(?i)(\\\\temp\\\\|/tmp/|appdata\\\\local\\\\temp).*\\.exe"}
+  mitre: {tactic: Defense Evasion, technique: T1036}
+

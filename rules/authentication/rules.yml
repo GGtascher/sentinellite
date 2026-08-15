@@ -1,0 +1,44 @@
+- id: AUTH-001
+  title: SSH brute force
+  description: At least five SSH authentication failures from one source within two minutes.
+  severity: high
+  match:
+    all:
+      - event_type: authentication_failure
+      - process_name: sshd
+  group_by: [source_ip]
+  threshold: {count: 5, timeframe_seconds: 120}
+  mitre: {tactic: Credential Access, technique: T1110}
+
+- id: AUTH-002
+  title: Repeated Windows authentication failures
+  description: Repeated Windows logon failures for the same source and user.
+  severity: high
+  match:
+    event_type: authentication_failure
+    parser_name: windows_event
+  group_by: [source_ip, username]
+  threshold: {count: 5, timeframe_seconds: 300}
+  mitre: {tactic: Credential Access, technique: T1110}
+
+- id: AUTH-003
+  title: Brute force followed by successful authentication
+  description: Authentication failures were followed by a success for the same source and user.
+  severity: critical
+  group_by: [source_ip, username]
+  sequence:
+    timeframe_seconds: 600
+    stages:
+      - event_type: authentication_failure
+      - event_type: authentication_success
+  mitre: {tactic: Credential Access, technique: T1110}
+
+- id: AUTH-004
+  title: Privileged account authentication
+  description: A successful login was observed for a commonly privileged account and warrants review.
+  severity: medium
+  match:
+    event_type: authentication_success
+    username: {regex: "^(root|administrator|admin)$"}
+  mitre: {tactic: Initial Access, technique: T1078}
+

@@ -1,0 +1,20 @@
+- id: WEB-001
+  title: Repeated web authentication failures
+  description: A source received repeated HTTP 401 responses within five minutes.
+  severity: medium
+  match:
+    event_type: http_request
+    http_status: 401
+  group_by: [source_ip]
+  threshold: {count: 8, timeframe_seconds: 300}
+  mitre: {tactic: Credential Access, technique: T1110}
+
+- id: WEB-002
+  title: Suspicious path traversal request
+  description: A web request contains traversal tokens targeting sensitive paths.
+  severity: high
+  match:
+    event_type: http_request
+    url: {regex: "(?i)(\\.\\./|%2e%2e|/etc/passwd|win\\.ini)"}
+  mitre: {tactic: Initial Access, technique: T1190}
+

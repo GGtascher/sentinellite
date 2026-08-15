@@ -1,0 +1,13 @@
+[
+  {"input":"2026-08-15 14:31:11 failed login user=admin src=10.0.0.5","expected":{"username":"admin","source_ip":"10.0.0.5","event_type":"authentication_failure"}},
+  {"input":"Aug 15 14:31:11 server01 sshd[1234]: Failed password for root from 10.0.0.5 port 55422 ssh2","expected":{"hostname":"server01","source_ip":"10.0.0.5","source_port":55422}},
+  {"input":"src_ip=192.168.1.12 dst_ip=8.8.8.8 action=blocked severity=high","expected":{"source_ip":"192.168.1.12","destination_ip":"8.8.8.8","severity":"high"}},
+  {"input":"10.0.0.4 - - [15/Aug/2026:14:12:01 +0200] \"GET /login HTTP/1.1\" 401 1234","expected":{"http_method":"GET","http_status":401,"url":"/login"}},
+  {"input":"{\"timestamp\":\"2026-08-15T12:20:00Z\",\"user\":\"alice\",\"ip\":\"10.1.2.3\",\"result\":\"failed\"}","expected":{"username":"alice","source_ip":"10.1.2.3","event_outcome":"failure"}},
+  {"input":"time=2026-08-15T12:30:00+02:00 client_ip=2001:db8::42 destination_ip=fd00::2 dport=443 protocol=tcp","expected":{"source_ip":"2001:db8::42","destination_ip":"fd00::2","destination_port":443}},
+  {"input":"event_id=4720 account=svc_admin host=dc-lab message=account-created","expected":{"username":"svc_admin","hostname":"dc-lab"}},
+  {"input":"2026-08-15T15:10:01Z HTTP POST /session status=403 source 198.51.100.10","expected":{"http_method":"POST","url":"/session","http_status":403}},
+  {"input":"node-X | auth failure | account: carol | origin 10.9.8.7","expected":{"username":"carol","source_ip":"10.9.8.7"}},
+  {"input":"mysterious frobnicator became chartreuse","expected":{"parser_name":"raw_fallback"}}
+]
+

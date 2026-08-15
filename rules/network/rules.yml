@@ -1,0 +1,20 @@
+- id: NET-001
+  title: Connection attempts across many ports
+  description: One source attempted connections to at least ten distinct destination ports in five minutes.
+  severity: high
+  match:
+    event_category: network
+  group_by: [source_ip, destination_ip]
+  threshold: {count: 10, timeframe_seconds: 300, distinct_field: destination_port}
+  mitre: {tactic: Discovery, technique: T1046}
+
+- id: NET-002
+  title: Repeated denied firewall connections
+  description: A source generated at least ten denied firewall events within five minutes.
+  severity: medium
+  match:
+    event_type: firewall_denied
+  group_by: [source_ip]
+  threshold: {count: 10, timeframe_seconds: 300}
+  mitre: {tactic: Discovery, technique: T1046}
+
