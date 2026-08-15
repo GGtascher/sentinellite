@@ -78,11 +78,14 @@ Usługi `db`, `backend` i `frontend` powinny osiągnąć stan healthy.
 ## 5. Adresy aplikacji
 
 - Panel: <http://localhost:3000>
+- Wbudowane dodawanie i sprawdzanie logów: <http://localhost:3000/ingest>
 - API: <http://localhost:8000/api/v1>
 - Dokumentacja OpenAPI: <http://localhost:8000/docs>
 - Stan systemu: <http://localhost:8000/api/v1/health>
 
 Endpoint zdrowia powinien zwrócić `status: healthy` oraz `database: available`.
+
+Na stronie **Add logs** wklej pojedynczy log, po jednym zdarzeniu w wierszu, sformatowany obiekt JSON albo tablicę JSON i wybierz **Submit and analyze**. Możesz też przesłać plik UTF-8 `.txt`, `.log`, `.json`, `.jsonl`, `.ndjson`, `.csv` lub `.tsv`. Gotowe przykłady obejmują Linux SSH, Windows/Sysmon JSON, firewall `key=value`, Apache/nginx i ogólny JSON. Dziennik ostatnich 25 wysłanych zdarzeń jest przechowywany w PostgreSQL i prowadzi do danych znormalizowanych oraz surowego logu. Nieznany format jest bezpiecznie zachowywany jako `raw_fallback`.
 
 ## 6. Dane demonstracyjne
 
