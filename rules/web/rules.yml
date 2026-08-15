@@ -17,4 +17,3 @@
     event_type: http_request
     url: {regex: "(?i)(\\.\\./|%2e%2e|/etc/passwd|win\\.ini)"}
   mitre: {tactic: Initial Access, technique: T1190}
-

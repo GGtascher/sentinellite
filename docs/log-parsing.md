@@ -50,4 +50,3 @@ ISO-8601, common syslog timestamps, Apache timestamps, numeric Unix seconds/mill
 ## Adding a parser
 
 Implement the `LogParser` protocol with a stable `name`, deterministic `confidence(raw, structured)`, and `parse(...) -> ParseResult`. Register it in the appropriate `ParserEngine` layer and add fixed corpus examples plus malformed-input tests. Parsing must be side-effect free and preserve unknown values.
-

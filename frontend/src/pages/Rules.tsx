@@ -10,4 +10,3 @@ export default function Rules() {
     {selected && <Panel title={selected.title} kicker={`${selected.id} · rule definition`} action={<Badge value={selected.severity}/>}><pre className="raw-log">{JSON.stringify(selected, null, 2)}</pre></Panel>}
   </div>
 }
-

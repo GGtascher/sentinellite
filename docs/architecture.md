@@ -40,4 +40,3 @@ FastAPI provides OpenAPI plus health, ingestion, event, alert, rule, statistics,
 ## Future scalability
 
 The modular monolith is appropriate for local and small-team workloads. A future release can move ingestion/detection into bounded background jobs, partition events by time, introduce collector authentication, add retention controls, and stream updates without changing the normalized event contract. Kafka, clustering, and Elasticsearch are intentionally absent from V0.1.
-

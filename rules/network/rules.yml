@@ -17,4 +17,3 @@
   group_by: [source_ip]
   threshold: {count: 10, timeframe_seconds: 300}
   mitre: {tactic: Discovery, technique: T1046}
-

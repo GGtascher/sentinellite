@@ -44,4 +44,3 @@ Rules run after each event is flushed in the ingestion transaction. Threshold/se
 ## Adding a rule
 
 Choose the appropriate category directory, use a globally unique ID, test the rule on positive and negative synthetic records, validate threshold grouping, and cite only a defensible ATT&CK technique. Run `python -m pytest backend/tests/test_detection.py`. Rules are reloaded on API restart in V0.1.
-

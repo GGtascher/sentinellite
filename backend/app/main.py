@@ -44,4 +44,3 @@ def root_health():
 @app.get("/", include_in_schema=False)
 def root():
     return {"name": "SentinelLite", "version": settings.version, "docs": "/docs"}
-

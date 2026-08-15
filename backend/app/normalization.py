@@ -161,4 +161,3 @@ def normalize(result: ParseResult, raw_event: str, source_type: str = "api") -> 
         event_metadata=metadata,
     )
     return normalized
-

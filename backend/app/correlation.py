@@ -37,4 +37,3 @@ def correlate_auth_process(db: Session, event: Event) -> Alert | None:
     )
     db.add(alert)
     return alert
-

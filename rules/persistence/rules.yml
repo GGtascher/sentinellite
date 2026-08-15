@@ -14,4 +14,3 @@
   match:
     event_type: scheduled_task_created
   mitre: {tactic: Persistence, technique: T1053.005}
-

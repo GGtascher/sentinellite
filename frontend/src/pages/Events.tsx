@@ -15,4 +15,3 @@ export default function Events() {
       <State loading={loading} error={error} empty={!data?.items.length}><div className="table-wrap"><table><thead><tr><th>Event</th><th>Timestamp</th><th>Type</th><th>Source</th><th>Host / user</th><th>Parser</th><th>Outcome</th></tr></thead><tbody>{data?.items.map(event => <tr key={event.id}><td><Link className="event-id" to={`/events/${event.id}`}>EVT-{shortId(event.id)}</Link></td><td>{formatDate(event.event_timestamp || event.ingested_at)}</td><td><strong>{event.event_type || 'unclassified'}</strong><small>{event.event_category || 'unknown category'}</small></td><td><code>{event.source_ip || '—'}</code></td><td>{event.hostname || '—'}<small>{event.username || 'No user'}</small></td><td>{event.parser_name}</td><td><Badge value={event.event_outcome}/></td></tr>)}</tbody></table></div></State>
     </Panel></div>
 }
-

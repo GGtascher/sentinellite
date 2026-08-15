@@ -27,4 +27,3 @@ cd frontend && npm test && npm run typecheck && npm run build
 ```
 
 Schema changes require an Alembic migration and upgrade/downgrade validation. Deployment changes require `docker compose config` and, where Docker is available, a clean image build and health check. Follow `AGENTS.md` and keep all functionality defensive.
-

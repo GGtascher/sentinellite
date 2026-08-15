@@ -2,4 +2,3 @@
   {"EventID":4625,"timestamp":"2026-08-15T12:20:00Z","Computer":"win-lab-01","user":"alice","src_ip":"10.1.2.3","message":"Synthetic failed logon"},
   {"EventID":4624,"timestamp":"2026-08-15T12:21:00Z","Computer":"win-lab-01","user":"alice","src_ip":"10.1.2.3","message":"Synthetic successful logon"}
 ]
-

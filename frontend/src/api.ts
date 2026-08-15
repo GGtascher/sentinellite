@@ -52,4 +52,3 @@ export const api = {
   rules: () => request<Rule[]>('/rules'),
   hosts: () => request<{hostname: string; event_count: number; last_seen: string}[]>('/hosts'),
 }
-

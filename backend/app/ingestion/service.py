@@ -105,4 +105,3 @@ def ingest_records(
         total_submitted=len(records), successfully_parsed=counts["parsed"], partially_parsed=counts["partial"],
         raw_fallback=counts["raw"], rejected=counts["rejected"], event_ids=ids, messages=messages,
     )
-

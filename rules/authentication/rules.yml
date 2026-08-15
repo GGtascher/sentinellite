@@ -41,4 +41,3 @@
     event_type: authentication_success
     username: {regex: "^(root|administrator|admin)$"}
   mitre: {tactic: Initial Access, technique: T1078}
-

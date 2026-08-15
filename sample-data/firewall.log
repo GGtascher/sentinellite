@@ -1,3 +1,2 @@
 timestamp=2026-08-15T12:20:00Z src_ip=192.168.1.12 dst_ip=8.8.8.8 src_port=52000 dst_port=53 protocol=udp action=blocked severity=high
 timestamp=2026-08-15T12:20:02Z src=10.0.0.2 dst=10.0.0.20 sport=49120 dport=443 protocol=tcp action=allowed
-

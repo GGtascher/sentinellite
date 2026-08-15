@@ -39,4 +39,3 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: POSTGRES_PASSWORD=ci-configuration-only docker compose config --quiet
-

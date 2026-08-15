@@ -36,4 +36,3 @@ Every behavior change requires relevant pytest and/or Vitest coverage. Include m
 ## Documentation and definition of done
 
 Update README/API/architecture/parsing/detection documentation with behavioral changes. A task is done only when relevant backend tests, frontend tests, typecheck, and build pass; migrations are validated for database work; and Docker configuration is checked when deployment changes. Report any environment-blocked checks and exact commands for the maintainer. Do not claim unverified behavior.
-

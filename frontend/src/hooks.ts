@@ -13,4 +13,3 @@ export function useApi<T>(loader: () => Promise<T>, dependencies: unknown[] = []
   }, dependencies)
   return {data, error, loading, setData}
 }
-

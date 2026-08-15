@@ -10,4 +10,3 @@
   {"input":"node-X | auth failure | account: carol | origin 10.9.8.7","expected":{"username":"carol","source_ip":"10.9.8.7"}},
   {"input":"mysterious frobnicator became chartreuse","expected":{"parser_name":"raw_fallback"}}
 ]
-

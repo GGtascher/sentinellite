@@ -35,4 +35,3 @@
     event_type: process_creation
     command_line: {regex: "(?i)(\\\\temp\\\\|/tmp/|appdata\\\\local\\\\temp).*\\.exe"}
   mitre: {tactic: Defense Evasion, technique: T1036}
-

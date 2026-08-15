@@ -125,4 +125,3 @@ class FirewallParser:
         denied = bool(action and action.lower() in {"deny", "denied", "drop", "dropped", "blocked"})
         pairs.update(event_category="network", event_type="firewall_denied" if denied else "firewall_connection", event_action=action, event_outcome="failure" if denied else "success")
         return ParseResult(self.name, 0.9, pairs)
-
