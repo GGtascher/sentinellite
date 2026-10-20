@@ -160,3 +160,9 @@ Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) and the perma
 ## License
 
 MIT. See [LICENSE](LICENSE). The neutral “SentinelLite contributors” holder should be reviewed by the repository owner before the first public tag.
+
+
+## Screenshot
+
+<img width="1269" height="701" alt="image" src="https://github.com/user-attachments/assets/af58dff5-9681-4dda-9259-5cc49cb0e3de" />
+
