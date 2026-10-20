@@ -10,7 +10,8 @@ Setup guides: [Українська](docs/quickstart-uk.md) · [Русский](
 
 ## Features
 
-- Single-event, batch, multiline, and bounded text-file ingestion
+- Built-in **Add logs** workbench for paste, batch, and bounded text-file ingestion
+- Persistent submission journal with parser/status verification and links to raw evidence
 - JSON, JSONL/NDJSON, CSV, TSV, key-value, syslog, SSH/auth, HTTP access, Windows/Sysmon-style, and firewall parsing
 - Specialized parsers plus best-effort generic extraction and raw-event fallback for unknown log formats
 - UTC timestamp normalization; validated IPv4/IPv6 and ports; field aliases; parser metadata
@@ -54,11 +55,18 @@ docker compose up --build
 Open:
 
 - Dashboard: <http://localhost:3000>
+- Add logs workbench: <http://localhost:3000/ingest>
 - API: <http://localhost:8000/api/v1>
 - OpenAPI docs: <http://localhost:8000/docs>
 - Database-backed health: <http://localhost:8000/api/v1/health>
 
 Stop with `docker compose down`. Add `-v` only when you intentionally want to delete local PostgreSQL data.
+
+## Add and verify logs in the browser
+
+Open <http://localhost:3000/ingest>. Paste one log, one event per line, a pretty JSON object, or a JSON array, then select **Submit and analyze**. You can also upload a UTF-8 `.txt`, `.log`, `.json`, `.jsonl`, `.ndjson`, `.csv`, or `.tsv` file. Built-in examples cover Linux SSH, Windows/Sysmon-style JSON, firewall key-value, Apache/nginx access, generic JSON, and unknown raw text.
+
+The response separates parsed, partial, raw-fallback, and rejected records. The persistent **Submission journal** shows the latest 25 events sent from the workbench and links each item to its normalized fields, parser confidence, metadata, and preserved raw log. Unknown formats are safely retained; log content is never executed.
 
 ## Demo mode
 

@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
@@ -45,5 +45,24 @@ describe('SentinelLite dashboard', () => {
     expect(await screen.findByText('SSH brute force')).toBeInTheDocument()
     expect(screen.getByText('AUTH-001')).toBeInTheDocument()
     expect(screen.getByText('5 events')).toBeInTheDocument()
+  })
+
+  it('submits pasted logs and refreshes the persistent workbench journal', async () => {
+    const fetchMock = vi.fn((_: string, init?: RequestInit) => {
+      if (init?.method === 'POST') return Promise.resolve(new Response(JSON.stringify({
+        total_submitted: 1, successfully_parsed: 1, partially_parsed: 0,
+        raw_fallback: 0, rejected: 0, event_ids: ['12345678-0000-0000-0000-000000000000'], messages: []
+      }), {status: 200}))
+      return Promise.resolve(new Response(JSON.stringify({items: [], total: 0, page: 1, page_size: 25}), {status: 200}))
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    render(<MemoryRouter initialEntries={['/ingest']}><App/></MemoryRouter>)
+    expect(await screen.findByText('Add and verify logs')).toBeInTheDocument()
+    fireEvent.change(screen.getByLabelText('Log content'), {target: {value: 'src_ip=10.0.0.1 action=blocked'}})
+    fireEvent.click(screen.getByRole('button', {name: 'Submit and analyze'}))
+    expect(await screen.findByText('Submission complete')).toBeInTheDocument()
+    expect(screen.getByText('Submitted')).toBeInTheDocument()
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('/ingest/text'), expect.objectContaining({method: 'POST'}))
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('source_type=workbench'), expect.anything())
   })
 })

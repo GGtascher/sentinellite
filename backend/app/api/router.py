@@ -89,11 +89,11 @@ async def ingest_upload(
 def list_events(
     db: Db, page: int = Query(1, ge=1), page_size: int = Query(50, ge=1, le=200),
     severity: str | None = None, source_ip: str | None = None, hostname: str | None = None,
-    username: str | None = None, event_type: str | None = None,
+    username: str | None = None, event_type: str | None = None, source_type: str | None = None,
     from_time: datetime | None = None, to_time: datetime | None = None,
 ) -> Page:
     filters = []
-    for column, value in ((Event.severity, severity), (Event.source_ip, source_ip), (Event.hostname, hostname), (Event.username, username), (Event.event_type, event_type)):
+    for column, value in ((Event.severity, severity), (Event.source_ip, source_ip), (Event.hostname, hostname), (Event.username, username), (Event.event_type, event_type), (Event.source_type, source_type)):
         if value:
             filters.append(column == value)
     if from_time:

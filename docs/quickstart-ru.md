@@ -76,11 +76,14 @@ docker compose ps
 ## 5. Открыть приложение
 
 - Панель: <http://localhost:3000>
+- Встроенное добавление и проверка логов: <http://localhost:3000/ingest>
 - API: <http://localhost:8000/api/v1>
 - Swagger/OpenAPI: <http://localhost:8000/docs>
 - Состояние системы: <http://localhost:8000/api/v1/health>
 
 Health endpoint должен вернуть `status: healthy` и `database: available`.
+
+На странице **Add logs** вставьте один лог, по одному логу в каждой строке, форматированный JSON-объект или JSON-массив и нажмите **Submit and analyze**. Здесь же можно загрузить UTF-8 файл `.txt`, `.log`, `.json`, `.jsonl`, `.ndjson`, `.csv` или `.tsv`. Готовые примеры показывают Linux SSH, Windows/Sysmon JSON, firewall `key=value`, Apache/nginx и generic JSON. Журнал последних 25 отправлений хранится в PostgreSQL и ведёт к нормализованному и исходному событию. Неизвестный формат безопасно сохраняется как `raw_fallback`.
 
 ## 6. Создать демонстрационные события
 

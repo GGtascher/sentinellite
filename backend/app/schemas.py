@@ -74,6 +74,8 @@ class EventSummary(BaseModel):
     id: str
     event_timestamp: datetime | None
     ingested_at: datetime
+    source_type: str
+    parse_status: str
     hostname: str | None
     source_ip: str | None
     username: str | None

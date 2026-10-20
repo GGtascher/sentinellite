@@ -2,7 +2,12 @@ export type EventSummary = {
   id: string; event_timestamp: string | null; ingested_at: string; hostname: string | null;
   source_ip: string | null; username: string | null; event_category: string | null;
   event_type: string | null; event_outcome: string | null; severity: string | null;
-  parser_name: string; message: string | null;
+  parser_name: string; parse_status: string; source_type: string; message: string | null;
+}
+
+export type IngestionResult = {
+  total_submitted: number; successfully_parsed: number; partially_parsed: number;
+  raw_fallback: number; rejected: number; event_ids: string[]; messages: string[];
 }
 
 export type EventDetail = EventSummary & Record<string, unknown> & {
@@ -33,7 +38,8 @@ export type Page<T> = {items: T[]; total: number; page: number; page_size: numbe
 const BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${BASE}${path}`, {headers: {'Content-Type': 'application/json', ...init?.headers}, ...init})
+  const headers = init?.body instanceof FormData ? init.headers : {'Content-Type': 'application/json', ...init?.headers}
+  const response = await fetch(`${BASE}${path}`, {...init, headers})
   if (!response.ok) {
     const body = await response.json().catch(() => ({}))
     throw new Error(body.detail || `Request failed (${response.status})`)
@@ -49,6 +55,11 @@ export const api = {
   alerts: (query = '') => request<Page<Alert>>(`/alerts${query}`),
   alert: (id: string) => request<Alert>(`/alerts/${id}`),
   updateAlert: (id: string, body: {status?: string; analyst_notes?: string}) => request<Alert>(`/alerts/${id}`, {method: 'PATCH', body: JSON.stringify(body)}),
+  ingestText: (event: string) => request<IngestionResult>('/ingest/text', {method: 'POST', body: JSON.stringify({event, source_type: 'workbench'})}),
+  ingestFile: (file: File) => {
+    const body = new FormData(); body.append('file', file)
+    return request<IngestionResult>('/ingest/upload?source_type=workbench', {method: 'POST', body})
+  },
   rules: () => request<Rule[]>('/rules'),
   hosts: () => request<{hostname: string; event_count: number; last_seen: string}[]>('/hosts'),
 }

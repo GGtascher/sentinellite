@@ -78,11 +78,14 @@ Die Dienste `db`, `backend` und `frontend` sollten den Zustand healthy erreichen
 ## 5. Anwendung öffnen
 
 - Dashboard: <http://localhost:3000>
+- Integrierte Protokolleingabe und Prüfung: <http://localhost:3000/ingest>
 - API: <http://localhost:8000/api/v1>
 - OpenAPI-Dokumentation: <http://localhost:8000/docs>
 - Systemzustand: <http://localhost:8000/api/v1/health>
 
 Der Health Endpoint sollte `status: healthy` und `database: available` zurückgeben.
+
+Auf **Add logs** können Sie ein Ereignis, ein Ereignis pro Zeile, ein formatiertes JSON-Objekt oder ein JSON-Array einfügen und **Submit and analyze** wählen. Alternativ laden Sie eine UTF-8-Datei mit der Endung `.txt`, `.log`, `.json`, `.jsonl`, `.ndjson`, `.csv` oder `.tsv` hoch. Beispiele erklären Linux SSH, Windows/Sysmon JSON, Firewall-`key=value`, Apache/nginx und generisches JSON. Das Journal der letzten 25 Einsendungen wird in PostgreSQL gespeichert und verlinkt normalisierte sowie rohe Ereignisdaten. Unbekannte Formate bleiben sicher als `raw_fallback` erhalten.
 
 ## 6. Demo-Daten erzeugen
 

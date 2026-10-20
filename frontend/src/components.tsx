@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { AlertTriangle, Database, Menu, Radar, Server, ShieldCheck, Siren, X } from 'lucide-react'
+import { AlertTriangle, Database, FileInput, Menu, Radar, Server, ShieldCheck, Siren, X } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 export function Badge({value}: {value: string | null | undefined}) {
@@ -23,7 +23,7 @@ export function PageHeader({eyebrow, title, description, action}: {eyebrow: stri
 }
 
 const nav = [
-  ['/', 'Overview', Radar], ['/events', 'Events', Database], ['/alerts', 'Alerts', Siren],
+  ['/', 'Overview', Radar], ['/ingest', 'Add logs', FileInput], ['/events', 'Events', Database], ['/alerts', 'Alerts', Siren],
   ['/rules', 'Detection rules', ShieldCheck], ['/hosts', 'Hosts', Server],
 ] as const
 

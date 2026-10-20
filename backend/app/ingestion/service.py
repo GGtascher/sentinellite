@@ -58,6 +58,8 @@ def records_from_text(text: str) -> list[str]:
         parsed = json.loads(stripped)
         if isinstance(parsed, list):
             return [json.dumps(value, ensure_ascii=False) if not isinstance(value, str) else value for value in parsed]
+        if isinstance(parsed, dict):
+            return [json.dumps(parsed, ensure_ascii=False)]
     except json.JSONDecodeError:
         pass
     return [line for line in text.splitlines() if line.strip()]
