@@ -342,13 +342,6 @@ Detection results should be treated as investigation signals rather than proof o
 - PCAP and network telemetry support
 - OpenTelemetry ingestion
 
-## Setup Guides
-
-- [Українська](docs/quickstart-uk.md)
-- [Русский](docs/quickstart-ru.md)
-- [Deutsch](docs/quickstart-de.md)
-- [Polski](docs/quickstart-pl.md)
-
 ## Contributing
 
 Contributions are welcome.
