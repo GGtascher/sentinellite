@@ -2,52 +2,115 @@
 
 **A local-first Mini-SIEM for security learning, detection engineering, home labs, and small defensive teams.**
 
-SentinelLite collects untrusted logs, selects a best-fit parser, normalizes investigation fields, preserves original evidence, evaluates YAML detections and correlations, and exposes the results through a documented API and responsive analyst dashboard.
+SentinelLite ingests security logs, selects an appropriate parser, normalizes investigation fields, preserves original evidence, evaluates YAML-based detections and correlations, and presents the results through a FastAPI backend and React analyst dashboard.
 
-Setup guides: [Українська](docs/quickstart-uk.md) · [Русский](docs/quickstart-ru.md) · [Deutsch](docs/quickstart-de.md) · [Polski](docs/quickstart-pl.md)
+> Project status: **0.1.0 development release.** The project is functional end-to-end and covered by automated tests, but it is not intended to replace an enterprise SIEM.
 
-> Project status: **0.1.0 development release.** Useful end-to-end and tested, but not yet intended to replace a staffed enterprise SIEM.
+## Screenshot
+
+<img width="1269" height="701" alt="SentinelLite dashboard" src="https://github.com/user-attachments/assets/af58dff5-9681-4dda-9259-5cc49cb0e3de" />
 
 ## Features
 
 - Single-event, batch, multiline, and bounded text-file ingestion
 - JSON, JSONL/NDJSON, CSV, TSV, key-value, syslog, SSH/auth, HTTP access, Windows/Sysmon-style, and firewall parsing
-- Specialized parsers plus best-effort generic extraction and raw-event fallback for unknown log formats
-- UTC timestamp normalization; validated IPv4/IPv6 and ports; field aliases; parser metadata
-- PostgreSQL storage with Alembic migrations and investigation-focused indexes
-- 14 version-controlled YAML rules: single-event, threshold, distinct-value, and ordered sequence detection
-- Higher-confidence authentication-to-PowerShell correlation
-- Event/alert timelines, raw evidence, MITRE context, notes, and analyst statuses
-- Overview analytics, event explorer, alerts, detection rules, and observed hosts
-- Fully local operation: no cloud API, telemetry export, or external log processing
-
-## Screenshots
-
-Screenshots will be added after the first tagged release. Run the Docker quick start below to view the complete responsive dark dashboard locally.
+- Specialized parsers with generic extraction and raw-event fallback for unknown formats
+- UTC timestamp normalization
+- IPv4/IPv6 and port validation
+- PostgreSQL storage with Alembic migrations
+- 14 version-controlled YAML detection rules
+- Single-event, threshold, distinct-value, and ordered-sequence detections
+- Authentication-to-PowerShell correlation
+- Event and alert timelines
+- Raw evidence preservation
+- MITRE ATT&CK context
+- Analyst notes and alert statuses
+- Overview analytics, event explorer, alerts, rules, and observed-host views
+- Fully local operation with no cloud telemetry or external log processing
 
 ## Architecture
 
 ```text
-Log sources → ingestion → parser selection → extraction → normalization
-            → PostgreSQL → YAML detection → correlation → alerts
-            → FastAPI → React dashboard
+Log sources
+    ↓
+Ingestion
+    ↓
+Parser selection
+    ↓
+Extraction
+    ↓
+Normalization
+    ↓
+PostgreSQL
+    ↓
+YAML detection
+    ↓
+Correlation
+    ↓
+Alerts
+    ↓
+FastAPI
+    ↓
+React dashboard
 ```
 
-SentinelLite is a modular monolith rather than a distributed stack. See [architecture](docs/architecture.md), [log parsing](docs/log-parsing.md), and [detection engine](docs/detection-engine.md).
+SentinelLite uses a modular-monolith architecture rather than a distributed stack.
 
-## Supported inputs
+More detailed documentation:
 
-Upload `.txt`, `.log`, `.json`, `.jsonl`, `.ndjson`, `.csv`, or `.tsv`, or post strings/objects through the API. Specialized parsing covers common Linux SSH authentication, syslog, Apache/nginx-style access, firewall key-value, and flat Windows/Sysmon-style exports. Unknown text is heuristically inspected and always retains `raw_event`; SentinelLite does **not** claim to understand every log format perfectly.
+- [Architecture](docs/architecture.md)
+- [Log parsing](docs/log-parsing.md)
+- [Detection engine](docs/detection-engine.md)
 
-## Docker quick start
+## Supported Inputs
 
-Requirements: Docker Engine/Desktop with Compose v2.
+SentinelLite accepts:
+
+- `.txt`
+- `.log`
+- `.json`
+- `.jsonl`
+- `.ndjson`
+- `.csv`
+- `.tsv`
+
+Events can also be submitted directly through the API.
+
+Specialized parsing currently covers common:
+
+- Linux SSH authentication logs
+- syslog records
+- Apache/nginx-style HTTP access logs
+- firewall key-value records
+- Windows/Sysmon-style exports
+
+Unknown text can still be stored through the raw-event fallback. SentinelLite does not claim to perfectly understand every log format.
+
+## Docker Quick Start
+
+Requirements:
+
+- Docker Engine or Docker Desktop
+- Docker Compose v2
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/GGtascher/sentinellite.git
 cd sentinellite
+```
+
+Create the local environment file:
+
+```bash
 cp .env.example .env
-# Edit .env and replace POSTGRES_PASSWORD.
+```
+
+Edit `.env` and replace the example PostgreSQL password.
+
+Start the stack:
+
+```bash
 docker compose up --build
 ```
 
@@ -55,69 +118,150 @@ Open:
 
 - Dashboard: <http://localhost:3000>
 - API: <http://localhost:8000/api/v1>
-- OpenAPI docs: <http://localhost:8000/docs>
-- Database-backed health: <http://localhost:8000/api/v1/health>
+- OpenAPI documentation: <http://localhost:8000/docs>
+- Health endpoint: <http://localhost:8000/api/v1/health>
 
-Stop with `docker compose down`. Add `-v` only when you intentionally want to delete local PostgreSQL data.
+Stop the stack with:
 
-## Demo mode
+```bash
+docker compose down
+```
 
-With the stack running:
+Use `docker compose down -v` only when you intentionally want to remove the local PostgreSQL data volume.
+
+## Demo Data
+
+With the application running:
 
 ```bash
 python scripts/generate_demo_events.py
 ```
 
-The safe local generator submits fictional Windows logons, suspicious PowerShell, firewall denials/port variation, SSH, web failures, normal events, and an unknown-format event. It triggers several detections and correlation without executing any log content or contacting external infrastructure.
+The generator submits fictional security events including:
 
-Sample files under `sample-data/` can be uploaded through the API:
+- Windows logons
+- suspicious PowerShell activity
+- firewall denials
+- SSH authentication activity
+- web failures
+- normal events
+- an unknown-format event
+
+The script is designed to exercise the detection pipeline without executing log contents or contacting external infrastructure.
+
+Sample files are also available under `sample-data/`.
+
+Example:
 
 ```bash
 curl -F "file=@sample-data/linux-auth.log" http://localhost:8000/api/v1/ingest/upload
 curl -F "file=@sample-data/windows-events.json" http://localhost:8000/api/v1/ingest/upload
 ```
 
-## API examples
+## API Examples
+
+Submit an event:
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/ingest/event \
   -H "Content-Type: application/json" \
   -d '{"event":"Aug 15 14:31:11 lab sshd[12]: Failed password for root from 10.0.0.5 port 55422 ssh2"}'
+```
 
+Query events:
+
+```bash
 curl "http://localhost:8000/api/v1/events?page=1&page_size=25&source_ip=10.0.0.5"
+```
+
+Query alerts:
+
+```bash
 curl "http://localhost:8000/api/v1/alerts?severity=high&status=new"
 ```
 
-Ingestion responses distinguish fully parsed, partially parsed, raw-fallback, and request-rejected records. An unknown format that can be stored safely is not reported as a parsing error.
+Ingestion responses distinguish fully parsed, partially parsed, raw-fallback, and rejected records.
 
-## Project structure
+An unfamiliar format that can be safely stored is not automatically treated as a parsing failure.
+
+## Project Structure
 
 ```text
-backend/app/       FastAPI, domain models, parsers, normalization, detection
-backend/alembic/   Database migrations
-backend/tests/     Unit/integration tests and deterministic parser corpus
-frontend/src/      React/TypeScript analyst dashboard
-rules/             YAML detection content by security category
-sample-data/       Safe synthetic input examples
-scripts/           Demo activity generator
-docs/              Architecture, parsing, and detection documentation
+sentinellite/
+├── backend/
+│   ├── app/
+│   ├── alembic/
+│   └── tests/
+├── frontend/
+│   └── src/
+├── rules/
+├── sample-data/
+├── scripts/
+├── docs/
+├── docker-compose.yml
+├── README.md
+├── SECURITY.md
+└── CONTRIBUTING.md
 ```
 
-## Development
+### Main areas
 
-Backend (Python 3.12+):
+- `backend/app/` — FastAPI, models, parsers, normalization, detection, correlation
+- `backend/alembic/` — database migrations
+- `backend/tests/` — backend unit and integration tests
+- `frontend/src/` — React and TypeScript analyst dashboard
+- `rules/` — YAML detection rules
+- `sample-data/` — safe synthetic log samples
+- `scripts/` — demo-data utilities
+- `docs/` — technical documentation
+
+## Local Development
+
+### Backend
+
+Python 3.12+ is recommended.
+
+Create a virtual environment:
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+```
+
+Activate it:
+
+```bash
+source .venv/bin/activate
+```
+
+On Windows:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Install development dependencies:
+
+```bash
 pip install -e ".[dev]"
+```
+
+Apply migrations:
+
+```bash
 alembic upgrade head
+```
+
+Start the backend:
+
+```bash
 uvicorn app.main:app --app-dir backend --reload
 ```
 
-The default non-Docker database is local SQLite for contributor convenience; Docker and supported deployment use PostgreSQL. Override with `DATABASE_URL` to test PostgreSQL locally.
+The non-Docker development configuration can use local SQLite for convenience. Docker deployments use PostgreSQL.
 
-Frontend (Node 22+):
+Override `DATABASE_URL` when testing another database configuration.
+
+### Frontend
 
 ```bash
 cd frontend
@@ -125,44 +269,94 @@ npm install
 npm run dev
 ```
 
-## Tests and quality checks
+## Tests and Quality Checks
+
+Backend:
 
 ```bash
-.venv/bin/python -m ruff check backend
-.venv/bin/python -m pytest
+python -m ruff check backend
+python -m pytest
+```
+
+Frontend:
+
+```bash
 cd frontend
 npm test
 npm run typecheck
 npm run build
 ```
 
-CI runs these checks plus Alembic offline SQL generation and Docker Compose configuration validation.
+CI additionally validates Alembic offline SQL generation and the Docker Compose configuration.
 
-## Security and privacy
+## Security and Privacy
 
-Logs are hostile data. SentinelLite uses validation, bounded uploads/events, extension allowlists, ORM queries, text-only rendering, and no command execution. Do not expose this V0.1 stack directly to untrusted networks: it has no authentication/RBAC yet. Change local database credentials, restrict listening interfaces/firewalls, and establish retention/backup policy for potentially sensitive logs. No logs leave the deployment unless an operator explicitly moves them. See [SECURITY.md](SECURITY.md).
+Security logs must be treated as untrusted input.
+
+SentinelLite uses:
+
+- bounded uploads and event sizes
+- extension allowlists
+- structured validation
+- SQLAlchemy ORM queries
+- text-only rendering of log values
+- no execution of log contents
+- local processing without external telemetry
+
+Version 0.1 does not include authentication or RBAC, so the application should not be exposed directly to untrusted networks.
+
+Potentially sensitive logs should be protected with appropriate firewall rules, credentials, retention policies, and backups.
+
+See [SECURITY.md](SECURITY.md) for additional information.
+
+## Limitations
+
+SentinelLite is a learning and portfolio project rather than an enterprise SIEM.
+
+Current limitations include:
+
+- no authentication or multi-user RBAC
+- no dedicated endpoint agents
+- no enterprise-scale ingestion architecture
+- no distributed processing
+- no built-in threat-intelligence service
+- best-effort parsing for unknown formats
+- limited correlation compared with mature commercial SIEM platforms
+
+Detection results should be treated as investigation signals rather than proof of compromise.
 
 ## Roadmap
 
 - Authenticated collectors and RBAC
-- Retention controls, background ingestion, and live updates
-- Linux/Windows agents and Sysmon streaming
-- Sigma compatibility and more parsers
-- Threat-intelligence enrichment with explicit local/privacy controls
-- Email/webhook notifications
-- Advanced correlation and multi-user investigations
-- PCAP/network telemetry and OpenTelemetry ingestion
+- Retention controls
+- Background ingestion
+- Live event updates
+- Linux and Windows collectors
+- Sysmon streaming
+- Sigma compatibility
+- Additional parsers
+- Optional threat-intelligence enrichment
+- Email and webhook notifications
+- Advanced correlation
+- Multi-user investigations
+- PCAP and network telemetry support
+- OpenTelemetry ingestion
+
+## Setup Guides
+
+- [Українська](docs/quickstart-uk.md)
+- [Русский](docs/quickstart-ru.md)
+- [Deutsch](docs/quickstart-de.md)
+- [Polski](docs/quickstart-pl.md)
 
 ## Contributing
 
-Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) and the permanent engineering rules in [AGENTS.md](AGENTS.md). This project accepts defensive security functionality only.
+Contributions are welcome.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development conventions, testing requirements, and guidelines for adding parsers or detection rules.
+
+The project is focused on defensive security functionality.
 
 ## License
 
-MIT. See [LICENSE](LICENSE). The neutral “SentinelLite contributors” holder should be reviewed by the repository owner before the first public tag.
-
-
-## Screenshot
-
-<img width="1269" height="701" alt="image" src="https://github.com/user-attachments/assets/af58dff5-9681-4dda-9259-5cc49cb0e3de" />
-
+Released under the [MIT License](LICENSE).
