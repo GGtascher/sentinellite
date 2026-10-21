@@ -1,13 +1,66 @@
-# Security policy
+# Security Policy
 
-## Supported versions
+## Project Status
 
-Until the first stable release, security fixes target the latest commit on the default branch. Tagged V0.x releases may change rapidly.
+SentinelLite is currently a development-stage cybersecurity portfolio project.
 
-## Reporting a vulnerability
+Until the first stable release, security fixes target the latest version of the default branch.
 
-Please do not disclose a suspected vulnerability in a public issue. Use the repository's **Security** tab and choose **Report a vulnerability** to open a private GitHub security advisory. If private vulnerability reporting is not enabled, ask the repository owner to enable it without including exploit details publicly. No private email address is invented for this project.
+## Reporting a Vulnerability
 
-Include the affected version/commit, impact, reproduction using synthetic data, and a suggested mitigation if available. Maintainers should acknowledge the report, keep the reporter informed, prepare a fix and regression test privately, and coordinate disclosure after a patched release.
+Please do not publish sensitive vulnerability details in a public GitHub issue.
 
-SentinelLite accepts defensive security research. Do not submit real credentials, personal logs, malware, weaponized payloads, or third-party data.
+When available, use GitHub's private vulnerability reporting feature through the repository's **Security** tab.
+
+A useful report should include:
+
+- the affected version or commit;
+- a description of the issue;
+- the expected security impact;
+- reproduction steps using synthetic or non-sensitive data;
+- a suggested mitigation, if available.
+
+Please do not include:
+
+- real credentials;
+- API keys;
+- authentication tokens;
+- personal logs;
+- private infrastructure information;
+- third-party confidential data.
+
+## Security Model
+
+SentinelLite processes potentially hostile log data.
+
+The application is designed to:
+
+- validate input at ingestion boundaries;
+- limit upload and event sizes;
+- preserve raw evidence without executing it;
+- use ORM-based database access;
+- render event content as text rather than trusted HTML;
+- operate without sending logs to external services by default.
+
+## Deployment Warning
+
+SentinelLite 0.1 does not provide authentication or role-based access control.
+
+Do not expose the development stack directly to an untrusted network.
+
+If adapting the project for a shared or production-like environment, add appropriate:
+
+- authentication;
+- authorization;
+- TLS;
+- firewall restrictions;
+- secure credential management;
+- retention policies;
+- backups;
+- monitoring.
+
+## Scope
+
+Security research and contributions should remain defensive.
+
+Do not submit real malware, stolen credentials, destructive payloads, or third-party sensitive data to the repository.
