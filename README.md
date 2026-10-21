@@ -96,7 +96,7 @@ Requirements:
 Clone the repository:
 
 ```bash
-git clone https://github.com/GGtascher/sentinellite.git
+git clone https://github.com/dmytrooliinyk-cyber/sentinellite.git
 cd sentinellite
 ```
 
