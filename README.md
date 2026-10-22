@@ -129,6 +129,74 @@ docker compose down
 
 Use `docker compose down -v` only when you intentionally want to remove the local PostgreSQL data volume.
 
+## Troubleshooting
+
+### PostgreSQL Authentication Failed
+
+If the backend fails to start with the following error:
+
+```text
+FATAL: password authentication failed for user "sentinellite"
+```
+
+**Cause:** PostgreSQL stores its credentials in a persistent Docker volume. Changing `POSTGRES_PASSWORD` in `.env` does not automatically update the password of an existing database.
+
+**Solution 1 — Preserve existing data (recommended)**
+
+Start the database container:
+
+```bash
+docker compose up -d db
+```
+
+Connect to PostgreSQL:
+
+```bash
+docker compose exec db psql -U sentinellite -d sentinellite
+```
+
+Update the database password:
+
+```sql
+\password sentinellite
+```
+
+Enter the password currently configured in `.env`, then exit with `\q`.
+
+Restart the application:
+
+```bash
+docker compose up -d --build
+```
+
+**Solution 2 — Reset the database (development only)**
+
+If existing data is not needed:
+
+```bash
+docker compose down -v
+docker compose up -d --build
+```
+
+**Warning:** This permanently deletes the PostgreSQL Docker volume, including stored events, alerts, and investigation data.
+
+### Verify Container Health
+
+Check that all services are running:
+
+```bash
+docker compose ps
+```
+
+Inspect backend logs if necessary:
+
+```bash
+docker compose logs backend --tail=100
+```
+
+**Note:** Always keep database credentials consistent with your `.env` configuration. Never commit `.env` files containing real passwords to GitHub.
+
+
 ## Demo Data
 
 With the application running:
